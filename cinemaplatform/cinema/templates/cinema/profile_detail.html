@@ -1,0 +1,20 @@
+{% load rest_framework %}
+
+<html><body>
+
+<h1>Profile - {{ profile.name }}</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {% render_form serializer %}
+    <input type="submit" value="Save">
+</form>
+
+<form method="GET">
+    
+    {% render_form serializer %}
+    <input type="submit" value="Save">
+</form>
+
+</body></html>
+
