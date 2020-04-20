@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from . models import *
+from django.contrib.auth.models import User
 
 
 a = []
@@ -25,3 +26,19 @@ class BookingSerializer(serializers.ModelSerializer):
 		fields = ['id','movie','custommer_email','phone','seats']
 
 	# seats = serializers.MultipleChoiceField(choices=SEAT_CHOICE)
+
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=('username','password') 
+
+class RegisterSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = User
+		fields = (
+			'username',
+			'first_name',
+			'last_name',
+			'password1',
+			'password2',
+			)
