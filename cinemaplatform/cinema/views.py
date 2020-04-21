@@ -17,7 +17,7 @@ from rest_framework.permissions import (
 	IsAdminUser,
 	IsAuthenticatedOrReadOnly) 
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 # Create your views here.
@@ -127,21 +127,6 @@ class BookingList(ListView):
 	queryset = Booking.objects.all()
 
 
-class LoginView(APIView):
-    serializer_class= LoginSerializer
-    queryset=User.objects.all()
-
-   
-    def post(self,request):
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-
-                return Response(status=HTTP_200_OK)
-
 class UserRegisterView(APIView):
 	serializer_class = RegisterSerializer
 	queryset=User.objects.all()
@@ -150,8 +135,10 @@ class UserRegisterView(APIView):
 		serializer = RegisterSerializer(data=request.data)
 
 		if serializer.is_valid():
+			print(serializer)
 			serializer.save()
-			return Response(status=HTTP_200_OK)
+
+			return Response(status=HTTP_201_CREATED)
 
 		return Response(serializer.errors)
 
@@ -166,3 +153,26 @@ class UserRegisterView(APIView):
     #     user.set_password(str(request.data.get('password')))
     #     user.save()
     #     return Response( status=HTTP_201_CREATED)
+
+class LoginView(APIView):
+    serializer_class= LoginSerializer
+    queryset=User.objects.all()
+
+   
+    def post(self,request):
+        # serializer = LoginSerializer(data=request.data)
+        self.username = request.POST.get('username')
+        self.password = request.POST.get('password')
+        # self.user = authenticate(serializer)
+        self.user = authenticate(username=self.username, password=self.password)
+        if self.user is not None:
+            if self.user.is_active:
+                login(request, self.user)
+
+                return Response(status=HTTP_200_OK)
+        return Response("something")
+class LogoutView(APIView):
+
+	def get(self, request):
+		logout(request)
+		return Response(status = HTTP_200_OK)

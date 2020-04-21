@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from . views import HomeViewSet, PresentationDetail, BookingViewSet, BookingCreate, BookingList, LoginView,UserRegisterView
+from . views import HomeViewSet, PresentationDetail, BookingViewSet, BookingCreate, BookingList, LoginView,UserRegisterView,LogoutView
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -15,6 +15,7 @@ urlpatterns = [
     path('create', BookingCreate.as_view(), name="booking_create"),
     path('list', BookingList.as_view(), name="booking_List"),
     path('login', LoginView.as_view(), name="login"),
+    path('logout', LogoutView.as_view(), name="logout"),
     path('register', UserRegisterView.as_view(), name="register"),
  
 ]
